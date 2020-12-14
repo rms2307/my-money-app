@@ -21,7 +21,7 @@ const login = (req, res, next) => {
         if (err) {
             return sendErrorsFromDB(res, err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
-            const token = jwt.sign(user.toJSON(), env.authSecret, { expiresIn: "1 day" })
+            const token = jwt.sign(user, env.authSecret, { expiresIn: "1 day" })
             const { name, email } = user
             res.json({ name, email, token })
         } else {
@@ -37,8 +37,8 @@ const validateToken = (req, res, next) => {
     })
 }
 
-const singnup = (req, res, next) => {
-    const name = req.body.nome || ''
+const signup = (req, res, next) => {
+    const name = req.body.name || ''
     const email = req.body.email || ''
     const password = req.body.password || ''
     const confirmPassword = req.body.confirm_password || ''
@@ -78,8 +78,8 @@ const singnup = (req, res, next) => {
             })
         }
     })
-
-    module.exports = { login, signup, validateToken }
 }
+
+module.exports = { login, signup, validateToken }
 
 
